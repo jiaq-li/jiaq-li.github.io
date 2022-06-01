@@ -16,21 +16,24 @@
   <meta name="author" content="JiaqiLi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="北邮计算机视觉课程视频笔记（二），主要内容是拟合（最小二乘、RANSAC、霍夫变换）与角点检测">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2022/05/30/hello-world/index.html">
+<meta property="og:title" content="北邮计算机视觉笔记(2)">
+<meta property="og:url" content="http://example.com/2022/04/23/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B02/index.html">
 <meta property="og:site_name" content="Rochel&#39;s Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="北邮计算机视觉课程视频笔记（二），主要内容是拟合（最小二乘、RANSAC、霍夫变换）与角点检测">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-30T07:13:21.077Z">
-<meta property="article:modified_time" content="2022-05-29T15:15:50.106Z">
+<meta property="og:image" content="https://s2.loli.net/2022/04/24/frFvmza7nycZA9Y.png">
+<meta property="article:published_time" content="2022-04-23T12:43:00.000Z">
+<meta property="article:modified_time" content="2022-04-25T13:58:56.814Z">
 <meta property="article:author" content="JiaqiLi">
+<meta property="article:tag" content="AI笔记">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2022/04/24/frFvmza7nycZA9Y.png">
   
   
   
-  <title>Hello World - Rochel&#39;s Blog</title>
+  <title>北邮计算机视觉笔记(2) - Rochel&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -193,7 +196,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="北邮计算机视觉笔记(2)"></span>
           
         </div>
 
@@ -204,8 +207,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-30 15:13" pubdate>
-          2022年5月30日 下午
+        <time datetime="2022-04-23 20:43" pubdate>
+          2022年4月23日 晚上
         </time>
       </span>
     
@@ -216,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          undefined 字
+          2.4k 字
         
       </span>
     
@@ -227,7 +230,7 @@
         
         
         
-          NaN 分钟
+          20 分钟
         
       </span>
     
@@ -265,23 +268,86 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">北邮计算机视觉笔记(2)</h1>
             
             <div class="markdown-body">
               
-              <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+              <h1 id="CH4-fitting-least-squares-amp-RANSAC"><a href="#CH4-fitting-least-squares-amp-RANSAC" class="headerlink" title="CH4.fitting(least squares &amp; RANSAC)"></a>CH4.fitting(least squares &amp; RANSAC)</h1><ul>
+<li>边缘等特征提取之后需要进行参数描述</li>
+<li>需要解决的问题：Noise，Extraneous data（外点），Missing data（eg遮挡）</li>
+<li>手段-目的Q&amp;A<img src="https://s2.loli.net/2022/04/17/fQwWxS7TniRZ3ag.png" srcset="/img/loading.gif" lazyload width=50%></li>
+</ul>
+<h2 id="最小二乘least-squares"><a href="#最小二乘least-squares" class="headerlink" title="最小二乘least squares"></a>最小二乘least squares</h2><ul>
+<li><strong>学过，直接莽上去试着推一边发现遗漏了许多细节，看来以后基础的东西还是得多复习</strong><h3 id="基础推导"><a href="#基础推导" class="headerlink" title="基础推导"></a>基础推导</h3><img src="https://s2.loli.net/2022/04/17/raFkHP24LXQSAcU.png" srcset="/img/loading.gif" lazyload width=80%>
+注意矩阵求导的方法，不记得了可以看[这个](https://blog.csdn.net/lirika_777/article/details/79646453)
+上述方法对竖直线不能拟合，即不具有旋转不变性，改用以下方法。
+### 改用与点线之间距离（权最小二乘）
+<img src="https://s2.loli.net/2022/04/17/xYF5wUk7ySbW1P2.png" srcset="/img/loading.gif" lazyload >
+svd分解，特征值特征向量那一套，参考[csdn](https://blog.csdn.net/qq_42700518/article/details/104614700)和[百度文库ppt](https://wenku.baidu.com/view/ca9145fd960590c69ec376f8.html)
+### 从极大似然估计角度来看
+<img src="https://s2.loli.net/2022/04/17/SmUw4O51elptcNd.png" srcset="/img/loading.gif" lazyload >
+<img src="https://s2.loli.net/2022/04/17/D781wO5UNyclWGB.png" srcset="/img/loading.gif" lazyload ></li>
+</ul>
+<p><strong>思想不一样，实际结果是一样的</strong></p>
+<h3 id="Robust-estimators-fitting"><a href="#Robust-estimators-fitting" class="headerlink" title="Robust estimators(fitting)"></a>Robust estimators(fitting)</h3><img src="https://s2.loli.net/2022/04/17/TWzSJoHrQ6lPiO4.png" srcset="/img/loading.gif" lazyload >
+简单来说就是改变求和中单纯的平方，调整参数使得拟合时对离谱的外点摆烂
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="RANSAC-Random-sample-consensus-适用外点很多"><a href="#RANSAC-Random-sample-consensus-适用外点很多" class="headerlink" title="RANSAC(Random sample consensus)(适用外点很多)"></a>RANSAC(Random sample consensus)(适用外点很多)</h2><p>步骤：</p>
+<ul>
+<li>选择估计所用的最小集合（例如估计一条直线需要取两个点）</li>
+<li>用所取子集进行拟合</li>
+<li>剩余的点按照误差对拟合结果投票</li>
+<li>重复以上三步，设置迭代停止条件</li>
+</ul>
+<img src="../../themes/fluid/source/img/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B02/9BJhcKnaok8Wyif.png" srcset="/img/loading.gif" lazyload width=50%>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>需要设置距离类型选择、投票阈值、迭代停止次数</p>
+<p>概率公式：<img src="https://s2.loli.net/2022/04/24/xw6bRSDHnqW5pdf.png" srcset="/img/loading.gif" lazyload width=80%></p>
+<p>其中e是外点率，即真实情况下，取到的点不在理想拟合直线附近的概率，s是第一步中的取点个数，$1-(1-e)^s$即为某一次迭代中，初始化取点取到外点以至于拟合直线不理想的概率，$(1-(1-e)^s)^N$即为整个拟合过程N次迭代都取到外点的概率，p为最终输出直线取到理想直线的置信度。</p>
+<ul>
+<li><p>优点：简单；缺点：参数多</p>
+</li>
+<li><p>软分类（改进）：取最后投票给该直线的所有点做最小二乘（refine）得到最终输出直线</p>
+</li>
+</ul>
+<h3 id="RANSAC其他用途"><a href="#RANSAC其他用途" class="headerlink" title="RANSAC其他用途"></a>RANSAC其他用途</h3><img src="https://s2.loli.net/2022/04/24/5EJnTyWIpmhzxPj.png" srcset="/img/loading.gif" lazyload width=70%>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>用RANSAC拟合上图所示仿射变换，最小集合即取左右三对点可以拟合（6个方程6个未知数），之后同上</p>
+<h2 id="The-Hough-transform（霍夫变换）"><a href="#The-Hough-transform（霍夫变换）" class="headerlink" title="The Hough transform（霍夫变换）"></a>The Hough transform（霍夫变换）</h2><p>思想：</p>
+<ul>
+<li>每个特征（像素）给所有有关的拟合结果投票</li>
+<li>需要关注噪声投票的结果，不能使其极大输出</li>
+<li>缺失部分数据不影响结果</li>
+</ul>
+<p>首先进行图片空间到参数空间的映射，线到点，点到线（hough即在参数空间离散投票）<br><img src="https://s2.loli.net/2022/04/24/9tnyj2mzZq6WJua.png" srcset="/img/loading.gif" lazyload width=50%><br><img src="https://s2.loli.net/2022/04/24/ua4SlWfBiv5gyx8.png" srcset="/img/loading.gif" lazyload width=50%><br>一个简单的例子，参数空间会把交点投出来，交点即对应图像空间拟合直线<br><img src="https://s2.loli.net/2022/04/24/yRs3avmW6U7z4xt.png" srcset="/img/loading.gif" lazyload width=60%><br><img src="https://s2.loli.net/2022/04/24/HopaNxXj6lUeEZt.png" srcset="/img/loading.gif" lazyload  width=70%></p>
+<p>无法表达与y轴平行的线，所以参数空间一般采用极坐标系<br><img src="https://s2.loli.net/2022/04/24/JGrMfgmP36HQuTq.png" srcset="/img/loading.gif" lazyload width=50% ><br><img src="https://s2.loli.net/2022/04/24/A8Si4L97RbzeZcx.png" srcset="/img/loading.gif" lazyload width=40%><br>注意 $(\rho , \theta)$参数坐标系无法表示圆<br><img src="https://s2.loli.net/2022/04/24/RAiZ9TFBbEN6dQl.png" srcset="/img/loading.gif" lazyload width=50%></p>
+<p>噪声比例会使得真正的拟合线更难被投出来，进一步，还可能由噪声形成伪线。可以在参数空间使用离散化网格了来增强噪声鲁棒性，像素特征对网格进行投票；更改投票策略，投票时距离近的格子得分高，距离远的得分低（eg高斯）<br>另外，可以降低转换时的外点率，可以先利用canny算子提取边缘剔除外点，对于边缘中的每个像素点，可以求得他的梯度方向，进一步取得他的“切线”，让该点只对切线对应参数空间格子投票</p>
+<h3 id="hough-变换处理圆和其他"><a href="#hough-变换处理圆和其他" class="headerlink" title="hough 变换处理圆和其他"></a>hough 变换处理圆和其他</h3><img src="https://s2.loli.net/2022/04/24/8uiQOAeEKt4UohY.png" srcset="/img/loading.gif" lazyload width=60%>
+对边缘上一点的梯度方向设定半径r取得圆心，r和圆心关系的参数空间满足右图，即该点对右图的红线投票
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+<h1 id="CH5-Corners-Harris角点"><a href="#CH5-Corners-Harris角点" class="headerlink" title="CH5.Corners(Harris角点)"></a>CH5.Corners(Harris角点)</h1><p>角点是一种局部特征，在配准，对齐等领域中引入，已配准为例，我们希望角点有如下特征</p>
+<ul>
+<li>可重复检出，两张图图像条件不一致，在一种图中检出的角点希望在另一张图对应位置也能检出</li>
+<li>检出角点具有显著性，能与其他角点区分</li>
+<li>计算快</li>
+<li>仅与局部区域有关</li>
+</ul>
+<p>角点检测最基本思路就是区域的方向移动（滑窗）会使得区域内的情况发生改变，如下图右侧所示<br><img src="https://s2.loli.net/2022/04/24/wuoVNDeprj5OMP4.png" srcset="/img/loading.gif" lazyload width=50%><br>数学公式可以表示为<br><img src="https://s2.loli.net/2022/04/24/AzGqnYgyBmV18Wt.png" srcset="/img/loading.gif" lazyload width=50%><br>$u,v,x,y$为输入，xy为当前滑窗中心坐标，uv为滑窗方向向量，$E(u,v)$为移动前后变化，w为窗内所赋的权值（可以用01门函数、高斯函数等等）。<br>角点需要得知移动前后变化大小，所以求一阶导（泰勒展开，矩阵论）<br><img src="https://s2.loli.net/2022/04/24/gaevLWmfVBdu4HZ.png" srcset="/img/loading.gif" lazyload width=70%><br><img src="https://s2.loli.net/2022/04/24/Ta4vEw5el9pAKiO.png" srcset="/img/loading.gif" lazyload width=50%><br><img src="https://s2.loli.net/2022/04/24/xz3LWkohPaCRSZb.png" srcset="/img/loading.gif" lazyload width=50%><br><img src="https://s2.loli.net/2022/04/24/geXcU51yRQ7tzLf.png" srcset="/img/loading.gif" lazyload width=60%><br>接下来讨论$M$矩阵即可<br>当是一个垂直或水平的边缘时，$I_x或I_y$其中一个为0，$M$矩阵一个特征值必然为（接近）0，不是角点<br>即我的M矩阵需要满秩，且两个特征值都离0较远<br>在通常情况下，M矩阵四个值都不为0，此时需要分解（相似对角化）<br><img src="https://s2.loli.net/2022/04/24/hgKX6WMdO2QVtN3.png" srcset="/img/loading.gif" lazyload width=70%><br>$R$即为旋转矩阵，$\lambda$越大，代表该方向变化越快，可以以一个椭圆表示出来，$R$即让这个一般椭圆旋转为正椭圆，$\lambda$对应变化方向还需要结合R对应的偏转来看<br>分类图：<img src="https://s2.loli.net/2022/04/24/xXN547abgsy2lIr.png" srcset="/img/loading.gif" lazyload width=50%><br>可以统一于指标R：<img src="https://s2.loli.net/2022/04/24/qFInsLBJkgdSCW2.png" srcset="/img/loading.gif" lazyload width=50%></p>
+<ul>
+<li>角点检测后，由于滑窗大小等因素，其实是一团一团的，与canny一样，需要非极大化抑制得到输出</li>
+</ul>
+<h2 id="特征工程中的不变性（Invariance-covariance-Scaling）"><a href="#特征工程中的不变性（Invariance-covariance-Scaling）" class="headerlink" title="特征工程中的不变性（Invariance covariance Scaling）"></a>特征工程中的不变性（Invariance covariance Scaling）</h2><ul>
+<li><p><strong>Invariance</strong>: image is transformed and corner locations do not change</p>
+<p>即$F(img)=F(T(img))$，相同图像经过一定变换$T$（曝光，对比度，角度等），经过相同的检测器$F$能提取出相同的特征</p>
+</li>
+<li><p><strong>Covariance</strong>: if we have two transformed versions of the same image, features should be detected in corresponding locations</p>
+<p>一般很难做到Invariance，Covariance即$F(T(img))=T’(F(img))$，图像变换前后的特征能通过变换$T’$形成一致</p>
+</li>
+</ul>
+<p>角点可以做到部分的Invariance不变性，例如所有像素经过一个$ax+b$的线性变换，部分角点仍能保持在门限上，但可能部分点变换后超过门限。平移旋转前后也可以做到Covariance。但如下图所示，<strong>不具有尺度不变性</strong></p>
+<img src="https://s2.loli.net/2022/04/25/sHaeOWMiBkmCpEN.png" srcset="/img/loading.gif" lazyload width=70%>
+
 
               
             </div>
@@ -289,6 +355,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI%E7%AC%94%E8%AE%B0/">#AI笔记</a>
+      
+    </div>
   
 </div>
 
@@ -300,12 +394,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2022/04/26/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B03/" title="北邮计算机视觉笔记(3)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">北邮计算机视觉笔记(3)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/04/28/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B05/" title="北邮计算机视觉笔记(5)">
-                        <span class="hidden-mobile">北邮计算机视觉笔记(5)</span>
+                      <a href="/2022/04/16/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B01/" title="北邮计算机视觉笔记(1)">
+                        <span class="hidden-mobile">北邮计算机视觉笔记(1)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -388,6 +488,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -620,6 +726,44 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        MathJax = {
+          tex    : {
+            inlineMath: { '[+]': [['$', '$']] }
+          },
+          loader : {
+            load: ['ui/lazy']
+          },
+          options: {
+            renderActions: {
+              findScript    : [10, doc => {
+                document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                  const display = !!node.type.match(/; *mode=display/);
+                  const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                  const text = document.createTextNode('');
+                  node.parentNode.replaceChild(text, node);
+                  math.start = { node: text, delim: '', n: 0 };
+                  math.end = { node: text, delim: '', n: 0 };
+                  doc.math.push(math);
+                });
+              }, '', false],
+              insertedScript: [200, () => {
+                document.querySelectorAll('mjx-container').forEach(node => {
+                  let target = node.parentNode;
+                  if (target.nodeName.toLowerCase() === 'li') {
+                    target.parentNode.classList.add('has-jax');
+                  }
+                });
+              }, '', false]
+            }
+          }
+        };
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.0/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 

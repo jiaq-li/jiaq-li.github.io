@@ -16,21 +16,24 @@
   <meta name="author" content="JiaqiLi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="北邮计算机视觉课程视频笔记（三），主要内容是尺度不变blob检测（sift）和图像纹理表示">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2022/05/30/hello-world/index.html">
+<meta property="og:title" content="北邮计算机视觉笔记(3)">
+<meta property="og:url" content="http://example.com/2022/04/26/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B03/index.html">
 <meta property="og:site_name" content="Rochel&#39;s Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="北邮计算机视觉课程视频笔记（三），主要内容是尺度不变blob检测（sift）和图像纹理表示">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-30T07:13:21.077Z">
-<meta property="article:modified_time" content="2022-05-29T15:15:50.106Z">
+<meta property="og:image" content="https://s2.loli.net/2022/04/25/yRsrYaCK4zWFcLm.png">
+<meta property="article:published_time" content="2022-04-26T10:15:00.000Z">
+<meta property="article:modified_time" content="2022-04-26T10:15:05.155Z">
 <meta property="article:author" content="JiaqiLi">
+<meta property="article:tag" content="AI笔记">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2022/04/25/yRsrYaCK4zWFcLm.png">
   
   
   
-  <title>Hello World - Rochel&#39;s Blog</title>
+  <title>北邮计算机视觉笔记(3) - Rochel&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -193,7 +196,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="北邮计算机视觉笔记(3)"></span>
           
         </div>
 
@@ -204,8 +207,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-30 15:13" pubdate>
-          2022年5月30日 下午
+        <time datetime="2022-04-26 18:15" pubdate>
+          2022年4月26日 晚上
         </time>
       </span>
     
@@ -216,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          undefined 字
+          2.1k 字
         
       </span>
     
@@ -227,7 +230,7 @@
         
         
         
-          NaN 分钟
+          18 分钟
         
       </span>
     
@@ -265,23 +268,67 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">北邮计算机视觉笔记(3)</h1>
             
             <div class="markdown-body">
               
-              <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+              <h1 id="CH6-Blob-detection"><a href="#CH6-Blob-detection" class="headerlink" title="CH6.Blob detection"></a>CH6.Blob detection</h1><p>Harris角点不具有尺度不变性，故提出一个具有尺度不变性的特征Blob detection，以此为基础的SIFT也应用广泛<br>理想状态如图，两圆中内容一致，具有尺度不变性。下面的是理想的检测器响应函数。</p>
+<img src="https://s2.loli.net/2022/04/25/CqdmArVYpUawxSl.png" srcset="/img/loading.gif" lazyload width=70%>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="拉普拉斯核"><a href="#拉普拉斯核" class="headerlink" title="拉普拉斯核"></a>拉普拉斯核</h2><p><strong>边缘检测中我们使用高斯一阶导判定极值</strong><br><img src="https://s2.loli.net/2022/04/25/ycszF5Wur9RiYJM.png" srcset="/img/loading.gif" lazyload width=50%><br><strong>引入高斯二阶导(拉普拉斯核Laplacian)，判定过0点也可以</strong><br><img src="https://s2.loli.net/2022/04/25/ntjUr4DZ5PgI1Cy.png" srcset="/img/loading.gif" lazyload width=50%></p>
+<p>与高斯核类似，拉普拉斯核也只有一个参数$\sigma$，且从下图中可以观察到，当$\sigma$与尺度一致时，会有最值响应，<br>这称为<strong>尺度选择特性</strong></p>
+<img src="https://s2.loli.net/2022/04/25/4h7BoSXcZrOMCVv.png" srcset="/img/loading.gif" lazyload width=80%>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Spatial selection: the magnitude of the Laplacian response will achieve a maximum at the center of the blob, provided the scale of the Laplacian is “matched” to the scale of the blob</li>
+</ul>
+<p>所以我们的思路是扔一堆不同$\sigma$的拉普拉斯核上去卷，取最大响应的对应就可以了</p>
+<p>随着$\sigma$增大，响应信号会衰减，以至于无法看出最值，所以还需要进行补偿，高斯偏导补偿（响应乘上）$\sigma$，拉普拉斯核补偿$\sigma^2$</p>
+<p>实际中图像$r与\sigma$的对应关系如图<br><img src="https://s2.loli.net/2022/04/25/z6mUcaT8kILCZ3E.png" srcset="/img/loading.gif" lazyload width=100%></p>
+<p>实际中，对一个点做不同$\sigma$的卷积，观察响应结果，看某个$\sigma$及其较大较小值，决定是否保留这个$\sigma$；<br>同时类似于非最大化抑制，该点还要与相邻像素比较响应最大值再输出</p>
+<p>常用手段是    1）Harris+Laplace 减少待检测像素数量     2）SIFT</p>
+<h2 id="SIFT"><a href="#SIFT" class="headerlink" title="SIFT"></a>SIFT</h2><img src="https://s2.loli.net/2022/04/25/4s2dcIWjGmBJUgP.png" srcset="/img/loading.gif" lazyload >
+主要是拉普拉斯核太慢了，DOG（高斯差分）模板提供的公式可以将拉普拉斯核化成两个高斯核之差，而高斯核的特性使得我们不用直接算$k\sigma$的大核，用$\sigma$和$\sqrt{(k\sigma)^2-\sigma^2}$即可
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="构建高斯金字塔"><a href="#构建高斯金字塔" class="headerlink" title="构建高斯金字塔"></a>构建高斯金字塔</h3><img src="https://s2.loli.net/2022/04/25/Yn1zexOqFmT4trg.png" srcset="/img/loading.gif" lazyload width=50%>
+先分组(组数o)再分层(**组内可供极值点检测的DOG层数s**)，由于极值点检测需要上下DOG层的存在，所以DOG是s+2层，DOG由高斯差分得到，所以高斯是s+3层，层间按照上述高斯特性计算，这是数量关系
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>$系数k=2^{\frac{1}{s}}$，主要考虑到如下图所示，<strong>s=2</strong>，带入可以得到DOG层第一组$\sigma$系数为$1,2^{1/2},2,2^{3/2}$，第二组系数则从2开始，有连续关系。同时，对原图做$2\sigma$高斯相当于降采样到一半做$\sigma$高斯，也即对于不同的组，我的高斯卷积核组不变，改变图像尺寸反复用这个高斯核组就能得到左边的各个高斯层的组。有时，高斯部分（左半边）第二组的$2\sigma$层（第一层）也由第一组的倒数第三层$k^2\sigma=2\sigma$直接降采样得到，这是一个普遍规律。参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343522892">知乎</a>，<a target="_blank" rel="noopener" href="https://blog.csdn.net/zddblog/article/details/7521424">zddhub的博客</a>。</p>
+<img src="https://s2.loli.net/2022/04/25/ZL8SPxWhCamc5zV.png" srcset="/img/loading.gif" lazyload >
+
+
+
+<h3 id="sift后续操作"><a href="#sift后续操作" class="headerlink" title="sift后续操作"></a>sift后续操作</h3><h4 id="解决视角带来的问题"><a href="#解决视角带来的问题" class="headerlink" title="解决视角带来的问题"></a>解决视角带来的问题</h4><img src="https://s2.loli.net/2022/04/25/dGIbQqPyMAf1Lzk.png" srcset="/img/loading.gif" lazyload width=50%>
+右图视角发生变化，如果用一个纯粹的圆，圆内状态很明显是不一样的，改用一个恰当的椭圆就可以解决该问题。具体方法如下，对区域内所有点计算Harris的M矩阵，得区域内信号对应的椭圆，保留变换快的方向，收缩变化慢的方向，不停迭代，得到所求椭圆。
+<img src="https://s2.loli.net/2022/04/25/JgMBAbxpnEUNeRV.png" srcset="/img/loading.gif" lazyload width=50%>
+
+<h4 id="圆内图像的角度问题"><a href="#圆内图像的角度问题" class="headerlink" title="圆内图像的角度问题"></a>圆内图像的角度问题</h4><img src="https://s2.loli.net/2022/04/25/qKGWnRtQ98TYD6V.png" srcset="/img/loading.gif" lazyload width=50%>
+需要一个旋转，采用基于梯度方向的方法。对区域内每个像素的梯度方向做直方图，找到最大柱子对应角度，例如每45°一等分，一共8根直方图，最高的对应90°，则对应图像旋转90°类似归零，两图都这么做就近似对准了。
+
+<h4 id="光照和局部细节问题"><a href="#光照和局部细节问题" class="headerlink" title="光照和局部细节问题"></a>光照和局部细节问题</h4><img src="https://s2.loli.net/2022/04/25/2pgtSeQ9TA6MBoF.png" srcset="/img/loading.gif" lazyload width=60%>
+如图采用**SIFT描述符**，把一个圆等分4×4=16份，对每一份求一个梯度直方图描述细节的相对关系（解决光照），还是45°一分，所以一个区域内用如图所示8指针代表一个区域，最后全部拉直得到一个区域数16×直方图8=128的描述符，对比描述符即可。
+
+<p>SIFT的Invariance &amp; covariance<br><img src="https://s2.loli.net/2022/04/25/T2bXv3G6E8AmYFN.png" srcset="/img/loading.gif" lazyload width=70%></p>
+<h1 id="CH7-Texture-纹理"><a href="#CH7-Texture-纹理" class="headerlink" title="CH7.Texture(纹理)"></a>CH7.Texture(纹理)</h1><p><strong>Importance to perception:</strong></p>
+<ul>
+<li>Often indicative of a material’s properties</li>
+<li>Can be important appearance cue, especially if shape is similar across objects</li>
+<li>Aim to distinguish between shape, boundaries, and texture</li>
+</ul>
+<p><strong>Technically:</strong></p>
+<ul>
+<li>Representation-wise, we want a feature one step above “building blocks” of filters, edges.</li>
+</ul>
+<p>纹理也是一种局部特征（pattern），所以任务就是发现和描述</p>
+<img src="https://s2.loli.net/2022/04/26/Slt2ebg4UYMJF9i.png" srcset="/img/loading.gif" lazyload width=50%>
+
+<p>对各个滑窗运用x方向和y方向高斯偏导核，用均值标识纹理特征，在特征空间聚类，就完成了纹理的发现和分类（聚类时考虑类间类内那一套）。</p>
+<img src="https://s2.loli.net/2022/04/26/w92b3LRoGjmxPJS.png" srcset="/img/loading.gif" lazyload width=50%>
+
+<p>也不一定要用偏导核，任何滤波器也行，尺寸是通过不断尝试缩放直到特征指标稳定得到的。实际中用d个滤波器得到d维描述符。</p>
+<img src="https://s2.loli.net/2022/04/26/3ONWhiD6Ucpdyeg.png" srcset="/img/loading.gif" lazyload width=50%>
+
+<p>上课和PPT也讲了协方差和多维高斯的数学描述，可以看一下。<br>就这些</p>
 
               
             </div>
@@ -289,6 +336,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI%E7%AC%94%E8%AE%B0/">#AI笔记</a>
+      
+    </div>
   
 </div>
 
@@ -300,12 +375,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2022/04/26/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B04/" title="北邮计算机视觉笔记(4)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">北邮计算机视觉笔记(4)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/04/28/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B05/" title="北邮计算机视觉笔记(5)">
-                        <span class="hidden-mobile">北邮计算机视觉笔记(5)</span>
+                      <a href="/2022/04/23/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B02/" title="北邮计算机视觉笔记(2)">
+                        <span class="hidden-mobile">北邮计算机视觉笔记(2)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -388,6 +469,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -620,6 +707,44 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        MathJax = {
+          tex    : {
+            inlineMath: { '[+]': [['$', '$']] }
+          },
+          loader : {
+            load: ['ui/lazy']
+          },
+          options: {
+            renderActions: {
+              findScript    : [10, doc => {
+                document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                  const display = !!node.type.match(/; *mode=display/);
+                  const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                  const text = document.createTextNode('');
+                  node.parentNode.replaceChild(text, node);
+                  math.start = { node: text, delim: '', n: 0 };
+                  math.end = { node: text, delim: '', n: 0 };
+                  doc.math.push(math);
+                });
+              }, '', false],
+              insertedScript: [200, () => {
+                document.querySelectorAll('mjx-container').forEach(node => {
+                  let target = node.parentNode;
+                  if (target.nodeName.toLowerCase() === 'li') {
+                    target.parentNode.classList.add('has-jax');
+                  }
+                });
+              }, '', false]
+            }
+          }
+        };
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.0/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 

@@ -16,21 +16,24 @@
   <meta name="author" content="JiaqiLi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="北邮计算机视觉课程视频笔记（一），主要内容是资源地址、基本滤波器（卷积）和简单的图像边缘提取">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2022/05/30/hello-world/index.html">
+<meta property="og:title" content="北邮计算机视觉笔记(1)">
+<meta property="og:url" content="http://example.com/2022/04/16/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B01/index.html">
 <meta property="og:site_name" content="Rochel&#39;s Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="北邮计算机视觉课程视频笔记（一），主要内容是资源地址、基本滤波器（卷积）和简单的图像边缘提取">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-30T07:13:21.077Z">
-<meta property="article:modified_time" content="2022-05-29T15:15:50.106Z">
+<meta property="og:image" content="https://s2.loli.net/2022/04/24/dR1zScx4l2gLbi9.png">
+<meta property="article:published_time" content="2022-04-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-25T11:40:44.675Z">
 <meta property="article:author" content="JiaqiLi">
+<meta property="article:tag" content="AI笔记">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2022/04/24/dR1zScx4l2gLbi9.png">
   
   
   
-  <title>Hello World - Rochel&#39;s Blog</title>
+  <title>北邮计算机视觉笔记(1) - Rochel&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -193,7 +196,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="北邮计算机视觉笔记(1)"></span>
           
         </div>
 
@@ -204,8 +207,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-30 15:13" pubdate>
-          2022年5月30日 下午
+        <time datetime="2022-04-16 00:00" pubdate>
+          2022年4月16日 凌晨
         </time>
       </span>
     
@@ -216,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          undefined 字
+          1.3k 字
         
       </span>
     
@@ -227,7 +230,7 @@
         
         
         
-          NaN 分钟
+          12 分钟
         
       </span>
     
@@ -265,23 +268,57 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">北邮计算机视觉笔记(1)</h1>
             
             <div class="markdown-body">
               
-              <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+              <h1 id="课程资源地址"><a href="#课程资源地址" class="headerlink" title="课程资源地址"></a>课程资源地址</h1><h3 id="计算机视觉入门课程"><a href="#计算机视觉入门课程" class="headerlink" title="计算机视觉入门课程"></a>计算机视觉入门课程</h3><ul>
+<li>课程链接：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1nz4y197Qv">[BiliBili]</a></li>
+<li>课件链接：<a target="_blank" rel="noopener" href="https://github.com/CV-xueba/A01_cvclass_basic/tree/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80_%E8%AF%BE%E4%BB%B6">[Github]</a> <a target="_blank" rel="noopener" href="https://gitee.com/cv-xueba/A01_cvclass_basic/tree/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80_%E8%AF%BE%E4%BB%B6">[Gitee]</a> <a target="_blank" rel="noopener" href="https://wws.lanzous.com/b01nn85ef">[蓝奏云]</a></li>
+<li>课后练习链接：<a target="_blank" rel="noopener" href="https://github.com/CV-xueba/A01_cvclass_basic_exercise">[Github]</a> <a target="_blank" rel="noopener" href="https://gitee.com/cv-xueba/A01_cvclass_basic_exercise">[Gitee]</a></li>
+</ul>
+<h3 id="计算机视觉与深度学习"><a href="#计算机视觉与深度学习" class="headerlink" title="计算机视觉与深度学习"></a>计算机视觉与深度学习</h3><ul>
+<li>课程链接：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V54y1B7K3">[BiliBili]</a></li>
+<li>课件链接：<a target="_blank" rel="noopener" href="https://github.com/CV-xueba/A02_cvclass_cv-dl/tree/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0_%E8%AF%BE%E4%BB%B6">[Github]</a> <a target="_blank" rel="noopener" href="https://gitee.com/cv-xueba/A02_cvclass_cv-dl/tree/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0_%E8%AF%BE%E4%BB%B6">[Gitee]</a> <a target="_blank" rel="noopener" href="https://wws.lanzous.com/b01nn857i">[蓝奏云]</a></li>
+</ul>
+<h1 id="CH2-filter"><a href="#CH2-filter" class="headerlink" title="CH2.filter"></a>CH2.filter</h1><h2 id="普通卷积"><a href="#普通卷积" class="headerlink" title="普通卷积"></a>普通卷积</h2><ul>
+<li>卷积常用三种形态 full,same,valid<img src="https://s2.loli.net/2022/04/16/nVHiTwkEvC92Fet.png" srcset="/img/loading.gif" lazyload alt="image.png" width=50%></li>
+</ul>
+<p>$$ \begin{bmatrix}  0&amp;0&amp;0 \  0&amp;1&amp;0 \  0&amp;0&amp;0 \  \end{bmatrix} $$(e)卷积得到原图（padding=1）$$1/9* \begin{bmatrix}  1&amp;1&amp;1\  1&amp;1&amp;1\  1&amp;1&amp;1\  \end{bmatrix}$$ （s）简单平滑，二者相减如图</p>
+<center class="half"><img src="https://s2.loli.net/2022/04/16/zX6nlxpgmRTHaqG.png" srcset="/img/loading.gif" lazyload width=47% align='left'><img src="https://s2.loli.net/2022/04/16/8kABmZRQl6EMwzr.png" srcset="/img/loading.gif" lazyload width = 47% align='right'></center>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+
+
+
+<p>即(e-s)可简单提取边缘，进一步(2e-s)卷积简单锐化效果</p>
+<h2 id="高斯卷积"><a href="#高斯卷积" class="headerlink" title="高斯卷积"></a>高斯卷积</h2><ul>
+<li>以上普通卷积易造成多出来的水平或竖直纹理，使用高斯卷积可以避免，标准差$\sigma$控制集中程度，一般设置卷积核size为$3\sigma$</li>
+<li><img src="https://s2.loli.net/2022/04/16/s36zefRQ5FA791I.png" srcset="/img/loading.gif" lazyload width=50% height=50%></li>
+<li>高斯卷积运算可以叠加，相同σ卷积两次等同于$ \sqrt{2}\sigma $卷积1次</li>
+<li>一个简单的类似可分离卷积的例子，可以将复杂度从$O(n^2m^2)$降到$O(2n^2m)=O(n^2m)$(n是图片大小，m是卷积核长/宽)</li>
+</ul>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><ul>
+<li>椒盐噪声（黑&amp;白）、脉冲噪声（白）、高斯噪声（每点叠加正态分布）<img src="https://s2.loli.net/2022/04/17/DZGoxQzKPqmIU2N.png" srcset="/img/loading.gif" lazyload alt="image.png" width=50%></li>
+<li>中值滤波核（median filter）和均值滤波核（mean filter），中位数-平均数</li>
+<li>高斯噪声-高斯滤波（需要调整$\sigma$）椒盐噪声-中值滤波</li>
+</ul>
+<h1 id="CH3-Edge-detection"><a href="#CH3-Edge-detection" class="headerlink" title="CH3.Edge detection"></a>CH3.Edge detection</h1><ul>
+<li>基本原理：导数求极值</li>
+</ul>
+<h2 id="求导算子"><a href="#求导算子" class="headerlink" title="求导算子"></a>求导算子</h2><p>eg.一个$ \begin{bmatrix}  1&amp;-1 \end{bmatrix} $的卷积核可以提取出竖直的轮廓（这可以看作是一个x方向求导算子，事实上，求导本身就可以看作是一种卷积，求导卷积和为0，平滑卷积和一般为1），$$ \begin{bmatrix}  1\-1 \end{bmatrix} $$可以提取水平向的轮廓<img src="https://s2.loli.net/2022/04/17/BLxUFmJuHWZCq5k.png" srcset="/img/loading.gif" lazyload width=50% ></p>
+<p>各种定义方式：<img src="https://s2.loli.net/2022/04/17/Oh5nm9p2IF1eZCY.png" srcset="/img/loading.gif" lazyload  width=50%></p>
+<p>边缘强度<em>edge strength</em>：$\Vert \nabla f \Vert=\sqrt{ (\frac{\partial f}{\partial x})^2+\frac{\partial f}{\partial y})^2 }$ </p>
+<p>由于噪声情况存在，一边先对图片做平滑（卷积）操作，上面提到，求导也是一种卷积，故可以使用结合律先将平滑算子与求导算子结合再做卷积，可以降低计算复杂度<img src="https://s2.loli.net/2022/04/17/p2UmWOiT89QKSLY.png" srcset="/img/loading.gif" lazyload width=60%></p>
+<p>显然，采用高斯核的平滑卷积越大，图像越平滑，但边缘越模糊</p>
+<h2 id="Canny"><a href="#Canny" class="headerlink" title="Canny"></a>Canny</h2><ul>
+<li>理想是找到超像素的的真正边缘</li>
+</ul>
+<p>一般图像平滑后利用边缘强度提取出边缘，进而阈值二值化后的边缘有的很粗，并不是真正的边缘，canny先使用非极大值抑制<em>Non-Maximum Suppression</em>，在梯度方向找寻极值，也需要插值得到加权之后的真正边缘点，细节可查资料。抑制后得到边缘单像素，但部分细节边缘可能会丢失，这来自于二值化的门限。</p>
+<p>进一步采用双门限法，先用高门限提取明显边缘，在利用低门限补充细节，我们认为前者与后者之间存在连接，于是补全缺失部分，同时将并不能与前者近似连接的细节去除。<img src="https://s2.loli.net/2022/04/17/3CWAnYHRKxzSjtZ.png" srcset="/img/loading.gif" lazyload  width=60%></p>
 
               
             </div>
@@ -289,6 +326,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI%E7%AC%94%E8%AE%B0/">#AI笔记</a>
+      
+    </div>
   
 </div>
 
@@ -300,12 +365,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2022/04/23/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B02/" title="北邮计算机视觉笔记(2)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">北邮计算机视觉笔记(2)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/04/28/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B05/" title="北邮计算机视觉笔记(5)">
-                        <span class="hidden-mobile">北邮计算机视觉笔记(5)</span>
+                      <a href="/2022/04/10/%E8%AF%BB%E6%96%87%E7%8C%AE%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="读文献工作流">
+                        <span class="hidden-mobile">读文献工作流</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -388,6 +459,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -620,6 +697,44 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        MathJax = {
+          tex    : {
+            inlineMath: { '[+]': [['$', '$']] }
+          },
+          loader : {
+            load: ['ui/lazy']
+          },
+          options: {
+            renderActions: {
+              findScript    : [10, doc => {
+                document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                  const display = !!node.type.match(/; *mode=display/);
+                  const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                  const text = document.createTextNode('');
+                  node.parentNode.replaceChild(text, node);
+                  math.start = { node: text, delim: '', n: 0 };
+                  math.end = { node: text, delim: '', n: 0 };
+                  doc.math.push(math);
+                });
+              }, '', false],
+              insertedScript: [200, () => {
+                document.querySelectorAll('mjx-container').forEach(node => {
+                  let target = node.parentNode;
+                  if (target.nodeName.toLowerCase() === 'li') {
+                    target.parentNode.classList.add('has-jax');
+                  }
+                });
+              }, '', false]
+            }
+          }
+        };
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.0/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
