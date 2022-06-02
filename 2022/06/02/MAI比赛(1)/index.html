@@ -16,24 +16,23 @@
   <meta name="author" content="JiaqiLi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="北邮计算机视觉课程视频笔记（五），主要内容是摄像机模型、标定和三维重建基础知识">
+    <meta name="description" content="CVPR2022Mobile AI 比赛开发日志一，主要是开发环境配置和一些常用命令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="北邮计算机视觉笔记(5)">
-<meta property="og:url" content="http://example.com/2022/04/28/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B05/index.html">
+<meta property="og:title" content="MAI比赛开发日志1">
+<meta property="og:url" content="http://example.com/2022/06/02/MAI%E6%AF%94%E8%B5%9B(1)/index.html">
 <meta property="og:site_name" content="Rochel&#39;s Blog">
-<meta property="og:description" content="北邮计算机视觉课程视频笔记（五），主要内容是摄像机模型、标定和三维重建基础知识">
+<meta property="og:description" content="CVPR2022Mobile AI 比赛开发日志一，主要是开发环境配置和一些常用命令">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2022/04/28/CZT5vty2KUn7iN4.png">
-<meta property="article:published_time" content="2022-04-28T09:23:00.000Z">
-<meta property="article:modified_time" content="2022-04-28T09:24:50.162Z">
+<meta property="og:image" content="https://s2.loli.net/2022/06/02/e4nZyBuNrP2DKp8.png">
+<meta property="article:published_time" content="2022-06-02T12:43:30.000Z">
+<meta property="article:modified_time" content="2022-06-02T15:01:54.254Z">
 <meta property="article:author" content="JiaqiLi">
-<meta property="article:tag" content="AI笔记">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://s2.loli.net/2022/04/28/CZT5vty2KUn7iN4.png">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/02/e4nZyBuNrP2DKp8.png">
   
   
   
-  <title>北邮计算机视觉笔记(5) - Rochel&#39;s Blog</title>
+  <title>MAI比赛开发日志1 - Rochel&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -208,7 +207,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="北邮计算机视觉笔记(5)"></span>
+            <span id="subtitle" data-typed-text="MAI比赛开发日志1"></span>
           
         </div>
 
@@ -219,8 +218,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-04-28 17:23" pubdate>
-          2022年4月28日 下午
+        <time datetime="2022-06-02 20:43" pubdate>
+          2022年6月2日 晚上
         </time>
       </span>
     
@@ -231,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          3.8k 字
         
       </span>
     
@@ -242,7 +241,7 @@
         
         
         
-          16 分钟
+          32 分钟
         
       </span>
     
@@ -280,45 +279,56 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">北邮计算机视觉笔记(5)</h1>
+            <h1 style="display: none">MAI比赛开发日志1</h1>
             
             <div class="markdown-body">
               
-              <h1 id="CH11-Segmentation-分割"><a href="#CH11-Segmentation-分割" class="headerlink" title="CH11.Segmentation(分割)"></a>CH11.Segmentation(分割)</h1><p>之前讲的都是基于像素的局部特征，分割是一种中层的图像处理和特征提取操作。<br>认知上，人眼的分割是自顶向下、自底向上同时发生的。图像处理中分割是一种自底向上无监督的图像处理方法，我们希望其能得到像素之上(“superpixels”)的特征<br><img src="https://s2.loli.net/2022/04/27/hEzNXgODQbcmYHZ.png" srcset="/img/loading.gif" lazyload width=50%></p>
-<h2 id="聚类（参数空间）"><a href="#聚类（参数空间）" class="headerlink" title="聚类（参数空间）"></a>聚类（参数空间）</h2><img src="https://s2.loli.net/2022/04/28/mQ87OViDAUvX31R.png" srcset="/img/loading.gif" lazyload width=50%>
-单纯从特征空间考虑聚类进行分割，则会将大熊猫头和肚子上的白毛分割为一类，并不理想，所以一般会在RGB之外引入XY，像素位置也作为特征进行聚类，但这样参数也不好做，细长物体还是有可能分为两部分。
-k-means优缺点，优点：
-- 简单；对小误差鲁棒
-缺点：
-- Memory-intensive；需要指定聚类参数K
-- 初始敏感（优化可解决）；只能找到类似圆的聚类
-
-<h2 id="Mean-shift"><a href="#Mean-shift" class="headerlink" title="Mean shift"></a>Mean shift</h2><img src="https://s2.loli.net/2022/04/28/SNbreUHEcQA7qRX.png" srcset="/img/loading.gif" lazyload width=50%>
-规定搜索框，每次迭代中搜索框当前中心向当前质心偏移（mean shift），直到中心与质心重合（局部极值），实际过程中，搜索大圆中包含一个人为规定大小的小圆，小圆会对在其内的点进行标记，在不断迭代中标记移动到局部极值路径上的所有点，最后，将所有通往同一处极值的点整合为一类。
-<img src="https://s2.loli.net/2022/04/28/61hAcGmNS3bIdsX.png" srcset="/img/loading.gif" lazyload width=50%>
-优点：
-- 相比于聚类，不再受限于圆形物体；仅一个参数（搜索窗大小）；
-- 可以发现数量可变的区域（相对于聚类需要指定k）；鲁棒
-
-<p>缺点：</p>
-<ul>
-<li>结果对搜索窗大小敏感；计算密集；维度高时不适用（点稀疏）</li>
+              <h1 id="Conda-Miniconda相关命令"><a href="#Conda-Miniconda相关命令" class="headerlink" title="Conda/Miniconda相关命令"></a>Conda/Miniconda相关命令</h1><ul>
+<li>conda create -n [name] python=x.x 创建环境</li>
+<li>conda info –envs 查看本地环境</li>
+<li>conda create -n [name] –clone [path] 通过上一句查看路径进行本地环境复制（“深拷贝”）</li>
+<li>conda activate [name]</li>
+<li>conda env export &gt; [name].yaml 将当前activate的环境导出参数文件，移植</li>
+<li>conda env create -f [name].yaml 新环境移植生效</li>
+<li>conda remove –name [name] –all 删除环境</li>
+<li>改名建议info -e后直接去路径改文件夹名字就可以了</li>
 </ul>
-<h2 id="图割（graph-partitioning）"><a href="#图割（graph-partitioning）" class="headerlink" title="图割（graph partitioning）"></a>图割（graph partitioning）</h2><p>这一部分与上课所讲略不同，快速过一遍。<br><img src="https://s2.loli.net/2022/04/28/P2KoMemOFz4VrjU.png" srcset="/img/loading.gif" lazyload width=50%><br>想要类似图割，删除不相似两像素间的边。任务主要分两部分：1）度量相似性；2）删除边的决策策略（指标/函数）<br>度量相似性：$exp(-\frac{1}{2\sigma^2}dist(\boldsymbol{x_i},\boldsymbol{x_j})^2)$，距离可以用各种方法了，最后通过这个公式可以标准化到0~1之间<br>如果单纯看相似性做决策，取分割完后两子集$A,B$的连接边权值$w(A,B)$最小，会导致边缘点本身连接不多易被割开形成碎片。<br><img src="https://s2.loli.net/2022/04/28/2V8fXGqnUmdyPFb.png" srcset="/img/loading.gif" lazyload width=50%></p>
-<p>所以通常用这个<br><img src="https://s2.loli.net/2022/04/28/GKOJPHc7kQb2weW.png" srcset="/img/loading.gif" lazyload width=50%><br>其中$w(A,V)$是指A和其他所有点形成的连接边权值和。对孤立点，该值（分母）增大，不易被切。<br>该公式算起来比较麻烦，用图论相关知识可以简化。只需要算出邻接关系矩阵$W$，值改为两点相似度。$D$是一个对角阵，每个元素是W矩阵对应行的累加和。最后：<br><img src="https://s2.loli.net/2022/04/28/L8reyDoS2jGIH3w.png" srcset="/img/loading.gif" lazyload width=50%><br>多少个点y就是多少维向量，值不同就代表不同类。<br>使得表达式$y^T(D-W)y+y^TDy$最小的y值即为所求。求导得$(D-W)y=\lambda Dy$推得y是D-W矩阵第二小的特征值对应的特征向量（最小的特征值为0）。最初求解出来的y还需要通过门限得到图割方案。</p>
-<h1 id="CH9-Classification-amp-Bag-of-word"><a href="#CH9-Classification-amp-Bag-of-word" class="headerlink" title="CH9.Classification &amp; Bag of word"></a>CH9.Classification &amp; Bag of word</h1><p>图像识别是图像层面的任务。有分类问题、检测问题（是否存在且所在位置、图像中包含哪些东西各自在哪、同时需求目标的属性语义等）、像素级别分割（语义目标包含哪些像素）…</p>
-<p>类别识别和单实例识别。事件和行为识别。</p>
-<p>任务有：1）如何将图像表示成向量特征，如何设计分类策略；2）给定训练数据，如何学习得到分类器；3）分类器应用于新数据</p>
-<p>深度学习以前，分类基于区域特征。分类器分为产生式、判别式。形象地说，产生式侧重描述特征，判别式注重分类面差异。<br>从公式上说，产生式侧重先验概率（已有知识）和似然（样本得到），即下面的公式。判别式通过各种方法得到后验，直接给出结果。<br>举了挺多例子可以看一下。</p>
-<img src="https://s2.loli.net/2022/04/28/8Q174pHwOnu3kLZ.png" srcset="/img/loading.gif" lazyload width=50%>
-
-<p>词袋模型是将图像转化为向量特征的方法，提供给后续如SVM等进一步操作。<br><img src="https://s2.loli.net/2022/04/28/wXY62KEdP93tMRg.png" srcset="/img/loading.gif" lazyload width=50%><br>将图像划分为类拼图的区域<br><img src="https://s2.loli.net/2022/04/28/V74pyLhuakRsYZE.png" srcset="/img/loading.gif" lazyload width=50%><br>纹理检测中，将图像划分后画出直方图，与词袋库直接进行比较可以判别纹理。<br><img src="https://s2.loli.net/2022/04/28/qQpeDumcSdYUA67.png" srcset="/img/loading.gif" lazyload width=50%><br>将图像使用SIFT提取区域特征（规则网格法等其他方法都可以）得到各个区域的描述符。进一步构建词典，对特征聚类，指定类数（单词数），聚类中心称为码本（codebook或visual vocabulary 视觉词汇），可以称为一号特征、二号特征等等，每个中心对应的多维特征向量称为codevector或visual word。之后就可以判别图像中一号特征、二号特征、三号特征等等分别出现了多少次进行匹配即可。</p>
-<ul>
-<li>单词数需要指定，太多太少都不好</li>
-<li>kmeans聚类计算密集</li>
-<li>实际中对图片可能先进行四等分，分别做词带匹配（空间金字塔）</li>
+<h1 id="Linux相关命令-amp-Shell语法"><a href="#Linux相关命令-amp-Shell语法" class="headerlink" title="Linux相关命令&amp;Shell语法"></a>Linux相关命令&amp;Shell语法</h1><ul>
+<li><p>df -hl 磁盘剩余容量</p>
+</li>
+<li><p>ls -lht 当前目录下文件大小和总和</p>
+</li>
+<li><p>cat /proc/meminfo 查内存  cat /proc/version 查系统版本</p>
+</li>
+<li><p>```shell<br>#有人之前想把数据集传回Windows本地处理再传上去，脚本几行就能干了<br>source=”/data0/lijiaqi/mai/depth_train/train/labels/depth/“ #源目录<br>des=”/data0/lijiaqi/mai/depth_train/val/labels/depth/“ #目标目录<br>for i in $(seq 739)<br>do</p>
+<pre><code class="hljs">mv $source$i&quot;.png&quot; $des;
+</code></pre>
+<p>done<br>#或者<br>for i in {0..739}<br>do</p>
+<pre><code class="hljs">mv $&#123;source&#125;$&#123;i&#125;&quot;.png&quot; $&#123;des&#125;
+</code></pre>
+<p>done</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs awk"><br>- to be <span class="hljs-keyword">continue</span>..<br><br><br><br><br><br><span class="hljs-comment"># CUDA&amp;cudnn配置</span><br><br><span class="hljs-number">1</span>. CUDA版本与显卡型号、**驱动版本**有关，可以去官网查，不过一般我们的其他部分如tensorflow对cuda有要求，装满足要求的最新版本就行<br><br>&lt;a href=<span class="hljs-string">&quot;https://sm.ms/image/XqWdgfVFQtRbhAp&quot;</span> target=<span class="hljs-string">&quot;_blank&quot;</span>&gt;&lt;img src=<span class="hljs-string">&quot;D:/ULB/hexoblog/themes/fluid/source/img/MAI%E6%AF%94%E8%B5%9B(1)/XqWdgfVFQtRbhAp.png&quot;</span> &gt;&lt;/a&gt;<br><br><span class="hljs-comment">## 非root用户装CUDA：</span><br><br><span class="hljs-number">1</span>. [CUDA Toolkit Archive | NVIDIA Developer](https:<span class="hljs-regexp">//</span>developer.nvidia.com/cuda-toolkit-archive)挑一个，一般就<span class="hljs-number">10.0</span>，<span class="hljs-number">10.1</span>，<span class="hljs-number">10.2</span>，<span class="hljs-number">11.0</span>，<span class="hljs-number">11.2</span><br>   以<span class="hljs-number">11.2</span>为例，这么选<br>   ![image.png](https:<span class="hljs-regexp">//</span>s2.loli.net<span class="hljs-regexp">/2022/</span><span class="hljs-number">06</span><span class="hljs-regexp">/02/</span>sDhEU5k7Nv9FaCQ.png)<br>   <br><span class="hljs-number">2</span>. cd到合适目录，<br><br>   ```sh<br>   wget https:<span class="hljs-regexp">//</span>developer.download.nvidia.com<span class="hljs-regexp">/compute/</span>cuda<span class="hljs-regexp">/11.2.0/</span>local_installers/cuda_11.<span class="hljs-number">2.0</span>_460.<span class="hljs-number">27.04</span>_linux.run<br>   <span class="hljs-comment">#完成之后</span><br>   chmod <span class="hljs-number">755</span> cuda_11.<span class="hljs-number">2.0</span>_460.<span class="hljs-number">27.04</span>_linux.run<br>   <span class="hljs-comment">#可能加.run可能不加</span><br>   <span class="hljs-comment">#或者</span><br>   chmod +x cuda_11.<span class="hljs-number">2.0</span>_460.<span class="hljs-number">27.04</span>_linux.run<br>   sh cuda_11.<span class="hljs-number">2.0</span>_460.<span class="hljs-number">27.04</span>_linux.run<br>   <span class="hljs-comment">#这一步可能因为/temp容量不够会报错，百度一下错误命令里加个tempdir应该就行或者清一下temp就行（不敢乱删hh）</span><br>   <span class="hljs-comment">#e.g. sh cuda_11.0.3_450.51.06_linux.run --tmpdir=/home/cqy/tmp</span><br>   <span class="hljs-comment">#出Log file not open. Segmentation fault 删掉/tmp下的cuda-installer.log，注非root用户可能删不了这个log，只能换cuda版本</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<h1 id="CH10-Object-Detection"><a href="#CH10-Object-Detection" class="headerlink" title="CH10.Object Detection"></a>CH10.Object Detection</h1><p>目标检测需要在给定图中找出目标位置。<br>对人脸检测而言，分为detection找出人脸，recognition确认是谁的脸。一般采用先滑窗再缩放的方法。<br>接下来用的AdaBoost，不再介绍了。</p>
+<ol start="3">
+<li><p><a href="https://sm.ms/image/6A7sRPjpeXnVEr9" target="_blank"><img src="https://s2.loli.net/2022/06/02/6A7sRPjpeXnVEr9.png" srcset="/img/loading.gif" lazyload width="50%"></a></p>
+<p>只装cuda，需要改option:<br><a href="https://sm.ms/image/1rUf2qFloj3IBba" target="_blank">&lt;img src=”https://s2.loli.net/2022/06/02/1rUf2qFloj3IBba.png” width=”50%””&gt;</a></p>
+<p><a href="https://sm.ms/image/rJ5OVE8vuonb27R" target="_blank"><img src="https://s2.loli.net/2022/06/02/rJ5OVE8vuonb27R.png" srcset="/img/loading.gif" lazyload width="50%"></a><br>之后一路选done然后install就行<br><a href="https://sm.ms/image/pZSLDNuaWMmvG7Q" target="_blank"><img src="https://s2.loli.net/2022/06/02/pZSLDNuaWMmvG7Q.png" srcset="/img/loading.gif" lazyload width="50%"></a><br>安装好了</p>
+</li>
+<li><p>```shell<br>vim ~/.bashrc<br>#跳到最后加上，然后正常vim编辑esc :wq退出就行<br>export PATH=your_path/bin${PATH:+:${PATH}}<br>export LD_LIBRARY_PATH=your_path/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}<br>export CUDA_HOME=your_path #记得把所有的your_path换成你的安装绝对路径 例：/data0/lijiaqi/cuda11.0<br>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:your_path/lib64<br>export LD_LIBRARY_PATH=your_path/extras/CUPTI/lib64:$LD_LIBRARY_PATH<br>#这一段的参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40860083/article/details/124738346">https://blog.csdn.net/qq_40860083/article/details/124738346</a><br>#退出之后<br>source ~/.bashrc<br>nvcc –version</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash">   &lt;a href=<span class="hljs-string">&quot;https://sm.ms/image/IJ8O5R2MQ9Fagf7&quot;</span> target=<span class="hljs-string">&quot;_blank&quot;</span>&gt;&lt;img src=<span class="hljs-string">&quot;https://s2.loli.net/2022/06/02/IJ8O5R2MQ9Fagf7.png&quot;</span> &gt;&lt;/a&gt;<br><span class="hljs-comment">## CUDA装好了，接下来装cudnn</span><br><br>   [cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)找到跟cuda匹配的cudnn，11.x的意思为当时发布时的最新几个版本，不了解的一般别下，选择x86_64下好。<br>&lt;a href=<span class="hljs-string">&quot;https://sm.ms/image/PQImiHY4aTM6hRj&quot;</span> target=<span class="hljs-string">&quot;_blank&quot;</span>&gt;&lt;img src=<span class="hljs-string">&quot;https://s2.loli.net/2022/06/02/PQImiHY4aTM6hRj.png&quot;</span> &gt;&lt;/a&gt;<br><br>复制到cuda目录下如图<br>&lt;a href=<span class="hljs-string">&quot;https://sm.ms/image/c2aoFl4IRUvPz7S&quot;</span> target=<span class="hljs-string">&quot;_blank&quot;</span>&gt;&lt;img src=<span class="hljs-string">&quot;https://s2.loli.net/2022/06/02/c2aoFl4IRUvPz7S.png&quot;</span> width=<span class="hljs-string">&quot;20%&quot;</span>&gt;&lt;/a&gt;<br><br>```shell<br><span class="hljs-built_in">cd</span> cuda11.2<br>tar -xvf cudnn-11.2-linux-x64-v8.1.1.33.tgz <span class="hljs-comment">#解压</span><br><span class="hljs-comment">#还有几个文件需要手动移动一下</span><br><span class="hljs-built_in">cp</span> cuda/include/cudnn.h your_path/include/ <span class="hljs-comment">#这里的your_path是安装cuda的绝对路径；默认为在这个文件夹下操作</span><br><span class="hljs-built_in">cp</span> cuda/lib64/libcudnn* your_path/lib64/<br><span class="hljs-built_in">chmod</span> a+r your_path/include/cudnn.h<br><span class="hljs-built_in">chmod</span> a+r your_path/lib64/libcudnn*<br><span class="hljs-comment">#https://blog.csdn.net/qq_40860083/article/details/124738346</span><br><br><span class="hljs-comment">#检查cudnn安装</span><br><span class="hljs-built_in">cat</span> your_path/cuda/include/cudnn_version.h | grep CUDNN_MAJOR -A 2<br><span class="hljs-comment">#e.g cat /data3/lijiaqi/cuda11.2/cuda/include/cudnn_version.h | grep CUDNN_MAJOR -A 2 </span><br></code></pre></td></tr></table></figure>
+<p><a href="https://sm.ms/image/rnJbC8laoMdxvg5" target="_blank"><img src="https://s2.loli.net/2022/06/02/rnJbC8laoMdxvg5.png" srcset="/img/loading.gif" lazyload ></a><br>可以看出cudnn 8.1.1安装成功，撒花</p>
+</li>
+</ol>
+<h1 id="Tensorflow安装与基本知识、操作"><a href="#Tensorflow安装与基本知识、操作" class="headerlink" title="Tensorflow安装与基本知识、操作"></a>Tensorflow安装与基本知识、操作</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>CPU版本dog都不用，这里说一下gpu版本安装，其实这应该是第一步，需要根据你对tf的需求去装cuda啥的</p>
+<p><a target="_blank" rel="noopener" href="https://tensorflow.google.cn/install/source?hl=zh-cn">从源代码构建  | TensorFlow (google.cn)</a><br>相关要求如上<br><a href="https://sm.ms/image/QvNt2PMkrch3oOY" target="_blank"><img src="https://s2.loli.net/2022/06/02/QvNt2PMkrch3oOY.png" srcset="/img/loading.gif" lazyload ></a></p>
+<p>接下来就可以直接pip install tensorflow-gpu==2.x.0安装了</p>
+<ul>
+<li><p>6月2日注：</p>
+<p>若要求需要剪枝，tf应采用2.5.0及以上版本，e.g.<br><a href="https://sm.ms/image/5GkJwzEgPvoKH2y" target="_blank"><img src="D:/ULB/hexoblog/themes/fluid/source/img/MAI%E6%AF%94%E8%B5%9B(1)/5GkJwzEgPvoKH2y.png" srcset="/img/loading.gif" lazyload ></a></p>
+<p>否则会报一个相当诡异的多头注意力没有的错误，博主<a target="_blank" rel="noopener" href="https://blog.csdn.net/QAQIknow/article/details/118210554">sinysama的博客</a>也踩过这个坑，真是相见恨晚。</p>
+</li>
+</ul>
 
               
             </div>
@@ -336,7 +346,7 @@ k-means优缺点，优点：
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  <a href="/categories/%E5%AD%A6%E6%9C%AF/" class="category-chain-item">学术</a>
   
   
 
@@ -348,13 +358,6 @@ k-means优缺点，优点：
     </div>
   
   
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/AI%E7%AC%94%E8%AE%B0/">#AI笔记</a>
-      
-    </div>
-  
 </div>
 
 
@@ -365,18 +368,12 @@ k-means优缺点，优点：
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/06/02/MAI%E6%AF%94%E8%B5%9B(1)/" title="MAI比赛开发日志1">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MAI比赛开发日志1</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/04/26/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B04/" title="北邮计算机视觉笔记(4)">
-                        <span class="hidden-mobile">北邮计算机视觉笔记(4)</span>
+                      <a href="/2022/04/28/%E5%8C%97%E9%82%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B05/" title="北邮计算机视觉笔记(5)">
+                        <span class="hidden-mobile">北邮计算机视觉笔记(5)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
